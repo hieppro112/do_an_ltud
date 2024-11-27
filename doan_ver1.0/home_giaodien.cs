@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
+using System.Data.Common;
 using System.Data.SqlClient;
 using System.Drawing;
 using System.Linq;
@@ -17,6 +18,7 @@ namespace doan_ver1._0
         {
             InitializeComponent();
             panel_account.Hide();
+            //panel_store.Hide();
             quyen_admin(vaitro);
         }
         private void quyen_admin(string vaitro)
@@ -86,10 +88,9 @@ namespace doan_ver1._0
 
         private void app_account_Click(object sender, EventArgs e)
         {
+            //panel_store.Hide();
             panel_account.Show();
         }
-
-
         private void home_giaodien_FormClosed(object sender, FormClosedEventArgs e)
         {
             table_info_accout.DataSource = loaddl_nhanvien();
@@ -103,6 +104,86 @@ namespace doan_ver1._0
             dangky.ShowDialog();
         }
 
+        private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
+        {
+        }
+        private void app_store_Click(object sender, EventArgs e)
+        {
+            //panel_store.Show();
+        }
 
+        private void s_seach_Click(object sender, EventArgs e)
+        {
+            //panel_seach.Show();
+        }
+        private void seach()
+        {
+            int vitri = cb_seach.SelectedIndex;
+            switch (vitri)
+            {
+                case 0:
+                    table_info_accout.DataSource = seach_sql("seach_maTK", "@maTK"); 
+                    break;
+                case 1:
+                    table_info_accout.DataSource = seach_sql("seach_user", "@user");
+                    break;
+
+                case 2: 
+                    table_info_accout.DataSource = seach_sql("seach_name", "@name");
+                    break;
+                case 3:
+                    table_info_accout.DataSource = seach_sql("seach_email", "@email");
+                    break;
+                case 4: 
+                    table_info_accout.DataSource = seach_sql("seach_vaitro", "@vaitro");
+                    break;
+
+                default:
+                    MessageBox.Show("erroll");break;
+            }
+        }
+        private DataTable seach_sql(string sql,string data)
+        {
+            DataTable table = new DataTable();
+            try
+            {
+                connect.Open();
+                SqlCommand cmd = new SqlCommand(sql,connect);
+                cmd.CommandType = CommandType.StoredProcedure;
+
+                SqlParameter a = new SqlParameter(data, txt_seach.Text);
+                cmd.Parameters.Add(a);
+                cmd.ExecuteNonQuery();
+
+                SqlDataAdapter hienthi = new SqlDataAdapter(cmd);
+                hienthi.Fill(table);
+
+                return table;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+            finally
+            {
+                connect.Close();
+            }
+            return null;
+        }
+
+        private void cb_seach_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            
+        }
+
+        private void btn_seach_Click(object sender, EventArgs e)
+        {
+            seach();
+        }
+
+        private void label4_Click(object sender, EventArgs e)
+        {
+
+        }
     }
 }

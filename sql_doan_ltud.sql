@@ -36,7 +36,55 @@ as
 select VaiTro from TaiKhoan
 where TenDangNhap = @user
 
-exec tp_get_vaitro'hieppro1'
+drop proc tp_get_vaitro
+
+create procedure tp_getvaitro
+@user nvarchar(50)
+as
+begin 
+	select VaiTro from TaiKhoan
+	where TenDangNhap = @user
+	end
+
+	exec tp_getvaitro'hieppro1'
+
+--start stored seach tai khoan
+
+create proc seach_user(@user nvarchar(50))
+as
+select * from TaiKhoan 
+where TenDangNhap = @user
+
+create proc seach_maTK(@maTK int)
+as
+select * from TaiKhoan 
+where MaTaiKhoan = @maTK
+
+create proc seach_name(@name nvarchar(100))
+as
+select * from TaiKhoan 
+where HoTen = @name
+
+create proc seach_email(@email nvarchar(100))
+as
+select * from TaiKhoan 
+where Email = @email
+
+create proc seach_vaitro(@vaitro nvarchar(50))
+as
+select * from TaiKhoan 
+where VaiTro = @vaitro
+
+
+
+exec seach_user'hieppro1'
+exec seach_maTK '1'
+exec seach_name 'le dai hiep'
+exec seach_email 'lehiep08052005@gmail.com'
+exec seach_vaitro 'User'
+
+--end seach store taikhoan
+
 --Store Dang Ky
 create proc tp_ThemTaiKhoan(@tenDangNhap nvarchar(50), @matKhau nvarchar(100),@hoTen nvarchar(100),@email nvarchar(100), @vaiTro nvarchar(50), @ngayTao datetime)
 as 
